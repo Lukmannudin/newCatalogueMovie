@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TheMovieDB</string>
+    <string name="hello_blank_fragment">Halo fragmen kosong</string>
+    <string name="genre">Kengerian</string>
+    <string name="movie_name">Spider Man</string>
+    <string name="rating">peringkat</string>
+    <string name="popularity">kepopuleran</string>
+    <string name="language">bahasa</string>
+    <string name="genres">Genre</string>
+    <string name="release">Rilis</string>
+    <string name="overview">Ikhtisar</string>
+    <string name="now_playing">Sedang Tayang</string>
+    <string name="up_coming">Akan Tayang</string>
+    <string name="search_movie">Pencarian Film</string>
+    <string name="setting">Pengaturan</string>
+    <string name="search">Cari</string>
+    <string name="search_placeholder">Nama Pencarian</string>
+</resources>

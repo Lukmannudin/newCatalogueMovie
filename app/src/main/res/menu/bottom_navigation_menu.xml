@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/now_playing"
+        android:enabled="true"
+        android:icon="@drawable/ic_now_playing_black_24dp"
+        android:title="@string/now_playing"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/up_coming"
+        android:enabled="true"
+        android:icon="@drawable/ic_update_black_24dp"
+        android:title="@string/up_coming"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/favorites_movie"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="@string/favorites"
+        app:showAsAction="ifRoom" />
+    <!--<item-->
+        <!--android:id="@+id/search_movie"-->
+        <!--android:enabled="true"-->
+        <!--android:icon="@drawable/ic_search_black_24dp"-->
+        <!--android:title="@string/search_movie"-->
+        <!--app:showAsAction="ifRoom" />-->
+</menu>
