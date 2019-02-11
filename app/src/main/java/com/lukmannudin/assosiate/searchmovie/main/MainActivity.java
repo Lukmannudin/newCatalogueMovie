@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.lukmannudin.assosiate.searchmovie.Alarm.AlarmReceiver;
 import com.lukmannudin.assosiate.searchmovie.R;
 import com.lukmannudin.assosiate.searchmovie.Utils;
 import com.lukmannudin.assosiate.searchmovie.main.Favorites.FavoritesFragment;
@@ -24,11 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private String selectedItem = null;
     private String itemSelect = "item_select";
     private String KEY_FRAGMENT = "fragment";
-
+    private AlarmReceiver alarmReceiver;
+    private int idNotif = 0;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        alarmReceiver = new AlarmReceiver();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

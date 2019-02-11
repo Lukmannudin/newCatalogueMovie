@@ -16,4 +16,13 @@
     <string name="setting">Pengaturan</string>
     <string name="search">Cari</string>
     <string name="search_placeholder">Nama Pencarian</string>
+    <string name="favorites">favorit</string>
+    <string name="duration">durasi</string>
+    <string name="add_widget">Tambah widget</string>
+    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="empty_text">Tidak Ada Data</string>
+    <string name="content_title">Judul Konten</string>
+    <string name="content_text">Teks Konten</string>
+    <string name="subtext">Sub Teks</string>
+    <string name="send_notif">Kirim Notifikasi</string>
 </resources>

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class NowPlayngFragment extends Fragment {
     NowPlayingAdapter adapter;
     List<ResultsItem> data2;
     private int pageId;
-
+    private Disposable disposable;
     public NowPlayngFragment() {
         // Required empty public constructor
     }
@@ -96,7 +95,7 @@ public class NowPlayngFragment extends Fragment {
         MovieService movieService = APIClient.getClient()
                 .create(MovieService.class);
 
-        movieService.getNowPlaying(BuildConfig.API_KEY)
+          movieService.getNowPlaying(BuildConfig.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<NowPlayingResponse>() {

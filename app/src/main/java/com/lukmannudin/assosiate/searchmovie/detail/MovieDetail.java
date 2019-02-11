@@ -1,6 +1,11 @@
 package com.lukmannudin.assosiate.searchmovie.detail;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.lukmannudin.assosiate.searchmovie.BuildConfig;
 import com.lukmannudin.assosiate.searchmovie.R;
 import com.lukmannudin.assosiate.searchmovie.Utils;
+import com.lukmannudin.assosiate.searchmovie.Widget.UpdateWidgetService;
 import com.lukmannudin.assosiate.searchmovie.dao.Database.FavoriteHelper;
 import com.lukmannudin.assosiate.searchmovie.dao.Model.Genre;
 import com.lukmannudin.assosiate.searchmovie.dao.Model.Movie;
@@ -196,6 +202,7 @@ public class MovieDetail extends AppCompatActivity {
                 break;
 
             case R.id.favorite: {
+                startJob();
                 if (isFavorite) {
                     removeFromFavorite();
                 } else {
@@ -210,9 +217,25 @@ public class MovieDetail extends AppCompatActivity {
         return true;
     }
 
+    private static int jobId = 100;
+    private static int SCHEDULE_OF_PERIOD = 10;
+
+    private void startJob(){
+        ComponentName mServiceComponent = new ComponentName(this, UpdateWidgetService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(jobId, mServiceComponent);
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setMinimumLatency(SCHEDULE_OF_PERIOD);
+        } else {
+            builder.setPeriodic(SCHEDULE_OF_PERIOD);
+        }
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        Objects.requireNonNull(jobScheduler).schedule(builder.build());
+        Toast.makeText(this, "Job Service started", Toast.LENGTH_SHORT).show();
+    }
     private void setFavorite() {
         if (isFavorite) {
-            menuItem.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_black_24dp));
+            menuItem.getItem(0).setIcon(ContextCompat.getDrawable( this, R.drawable.ic_favorite_black_24dp));
         } else {
             menuItem.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_24dp));
         }

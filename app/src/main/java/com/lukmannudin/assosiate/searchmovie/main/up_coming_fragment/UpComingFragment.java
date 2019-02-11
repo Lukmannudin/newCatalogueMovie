@@ -1,6 +1,7 @@
 package com.lukmannudin.assosiate.searchmovie.main.up_coming_fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.lukmannudin.assosiate.searchmovie.Alarm.AlarmReceiver;
 import com.lukmannudin.assosiate.searchmovie.BuildConfig;
 import com.lukmannudin.assosiate.searchmovie.R;
 import com.lukmannudin.assosiate.searchmovie.Utils;
@@ -50,7 +52,6 @@ public class UpComingFragment extends Fragment {
         UpComingFragment fragment = new UpComingFragment();
         Bundle args = new Bundle();
         args.putInt(Utils.page, pageId);
-        Log.i("anjing",String.valueOf(pageId));
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +87,9 @@ public class UpComingFragment extends Fragment {
         loading = view.findViewById(R.id.mainProggressbar);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         movieRecyclerView.setLayoutManager(layoutManager);
+
+
+
         if (data2 != null) {
             adapter = new NowPlayingAdapter(getContext(), data2, pageId);
             movieRecyclerView.setAdapter(adapter);
@@ -94,6 +98,12 @@ public class UpComingFragment extends Fragment {
             getData();
         }
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     private void getData() {
@@ -119,15 +129,21 @@ public class UpComingFragment extends Fragment {
 
                     }
                 });
-
     }
 
     private void processData(List<ResultsItem> resultsItems) {
         data.addAll(resultsItems);
+        processAlarm(getContext(),resultsItems);
         adapter = new NowPlayingAdapter(getContext(), resultsItems, pageId);
         movieRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         loading.setVisibility(View.GONE);
     }
 
+    private void processAlarm(Context context, List<ResultsItem> data2){
+        AlarmReceiver alarmReceiver;
+        alarmReceiver = new AlarmReceiver();
+        alarmReceiver.setOneTimeAlarm(context,
+                data2);
+    }
 }
