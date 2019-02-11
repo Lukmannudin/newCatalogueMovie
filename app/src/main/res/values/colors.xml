@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorSecondaryText">#000</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="alizarin">#e74c3c</color>
+    <color name="wisteria">#8e44ad</color>
+    <color name="asbestos">#7f8c8d</color>
+    <color name="dracula_orchid">#2d3436</color>
 </resources>

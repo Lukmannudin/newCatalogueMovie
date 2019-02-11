@@ -12,7 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.lukmannudin.assosiate.searchmovie.Alarm.AlarmReceiver;
+import com.lukmannudin.assosiate.searchmovie.Alarm.ReleaseReminder;
 import com.lukmannudin.assosiate.searchmovie.R;
+import com.lukmannudin.assosiate.searchmovie.ReminderSetting;
 import com.lukmannudin.assosiate.searchmovie.Utils;
 import com.lukmannudin.assosiate.searchmovie.main.Favorites.FavoritesFragment;
 import com.lukmannudin.assosiate.searchmovie.main.now_playing_fragment.NowPlayngFragment;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        alarmReceiver = new AlarmReceiver();
+//        alarmReceiver = new AlarmReceiver();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         int pageId = getIntent().getIntExtra(Utils.page, 0);
-        Log.i("fra ", String.valueOf(pageId));
 
         if (pageId != 0) {
             switch (pageId) {
@@ -114,9 +115,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.setting: {
+            case R.id.change_language: {
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS), 0);
                 return true;
+            }
+            case R.id.reminder_setting: {
+                Intent intent = new Intent(this, ReminderSetting.class);
+                startActivity(intent);
             }
         }
         return super.onOptionsItemSelected(item);

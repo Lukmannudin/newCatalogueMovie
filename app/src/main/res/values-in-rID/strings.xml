@@ -25,4 +25,6 @@
     <string name="content_text">Teks Konten</string>
     <string name="subtext">Sub Teks</string>
     <string name="send_notif">Kirim Notifikasi</string>
+    <string name="change_language">Ganti Bahasa</string>
+
 </resources>

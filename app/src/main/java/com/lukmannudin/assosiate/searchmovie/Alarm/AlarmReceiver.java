@@ -110,7 +110,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]));
             calendar.set(Calendar.SECOND, 0);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, data.get(i).getId(), intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, intent, 0);
             if (alarmManager != null) {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
@@ -159,20 +159,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public void alarmReleaseDisabled(Context context, List<ResultsItem> data){
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
-        for (int i = 1; i < data.size(); i++) {
-            PendingIntent pendingUpdateIntent = PendingIntent.getService(context, data.get(i).getId(), updateServiceIntent, 0);
-            // Cancel alarms
-            try {
-                alarmManager.cancel(pendingUpdateIntent);
-            } catch (Exception e) {
-                Log.e("Alarm", "AlarmManager update was not canceled. " + e.toString());
-            }
-        }
-
-    }
 }

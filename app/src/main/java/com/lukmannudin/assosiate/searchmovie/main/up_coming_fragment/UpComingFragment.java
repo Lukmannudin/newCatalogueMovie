@@ -133,7 +133,7 @@ public class UpComingFragment extends Fragment {
 
     private void processData(List<ResultsItem> resultsItems) {
         data.addAll(resultsItems);
-        processAlarm(getContext(),resultsItems);
+//        processAlarm(getContext(),resultsItems);
         adapter = new NowPlayingAdapter(getContext(), resultsItems, pageId);
         movieRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
