@@ -61,42 +61,47 @@ public class FavoriteHelper {
 
     public ArrayList<Movie> getAllFavorite() {
         ArrayList<Movie> arrayList = new ArrayList<>();
-        Cursor cursor = database.query(DATABASE_TABLE, null,
-                null,
-                null,
-                null,
-                null,
-                _ID + " ASC",
-                null);
-        cursor.moveToFirst();
-        Movie movie;
-        if (cursor.getCount() > 0) {
-            do {
-                movie = new Movie();
-                String sb = cursor.getString(cursor.getColumnIndexOrThrow(GENRES));
+        try {
+            Cursor cursor = database.query(DATABASE_TABLE, null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    _ID + " ASC",
+                    null);
+            cursor.moveToFirst();
+            Movie movie;
+            if (cursor.getCount() > 0) {
+                do {
+                    movie = new Movie();
+                    String sb = cursor.getString(cursor.getColumnIndexOrThrow(GENRES));
 
-                List<String> s = Arrays.asList(sb.split("\\s*,\\s*"));
-                List<Genre> gList = new ArrayList<>();
-                if (s.size()>0){
-                    for (int i=1;i<s.size();i++){
-                        gList.add(new Genre(s.get(i)));
+                    List<String> s = Arrays.asList(sb.split("\\s*,\\s*"));
+                    List<Genre> gList = new ArrayList<>();
+                    if (s.size() > 0) {
+                        for (int i = 1; i < s.size(); i++) {
+                            gList.add(new Genre(s.get(i)));
+                        }
                     }
-                }
 
-                movie.setId(cursor.getInt(cursor.getColumnIndexOrThrow(_ID)));
-                movie.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
-                movie.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_PATH)));
-                movie.setVoteAverage(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(RATING))));
-                movie.setPopularity(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(POPULARITY))));
-                movie.setOriginalLanguage(cursor.getString(cursor.getColumnIndexOrThrow(LANGUAGE)));
-                movie.setGenres(gList);
-                movie.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(RELEASE)));
-                movie.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
-                arrayList.add(movie);
-                cursor.moveToNext();
-            } while (!cursor.isAfterLast());
+                    movie.setId(cursor.getInt(cursor.getColumnIndexOrThrow(_ID)));
+                    movie.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
+                    movie.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_PATH)));
+                    movie.setVoteAverage(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(RATING))));
+                    movie.setPopularity(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(POPULARITY))));
+                    movie.setOriginalLanguage(cursor.getString(cursor.getColumnIndexOrThrow(LANGUAGE)));
+                    movie.setGenres(gList);
+                    movie.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(RELEASE)));
+                    movie.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
+                    arrayList.add(movie);
+                    cursor.moveToNext();
+                } while (!cursor.isAfterLast());
+            }
+            cursor.close();
+            return arrayList;
+        }catch (Exception e){
+            Log.i("ERROR",e.getLocalizedMessage());
         }
-        cursor.close();
         return arrayList;
     }
 
@@ -111,6 +116,7 @@ public class FavoriteHelper {
                 null);
 
         cursor.moveToFirst();
+
         return cursor.getCount() > 0;
     }
 

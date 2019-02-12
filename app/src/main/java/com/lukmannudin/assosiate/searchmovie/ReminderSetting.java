@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.lukmannudin.assosiate.searchmovie.Alarm.AlarmReceiver;
+import com.lukmannudin.assosiate.searchmovie.Alarm.DailyReminder;
 import com.lukmannudin.assosiate.searchmovie.Alarm.ReleaseReminder;
 import com.lukmannudin.assosiate.searchmovie.dao.Database.StatusHelper;
 
@@ -20,6 +20,7 @@ public class ReminderSetting extends AppCompatActivity {
     private SwitchCompat scDaily, scRelease;
     private int DAILY_FIELD = 0;
     private int RELEASE_FIELD = 1;
+    private int TOTAL_ALARM_FIELD = 2;
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +46,30 @@ public class ReminderSetting extends AppCompatActivity {
         } else {
             scRelease.setChecked(true);
         }
+        context = this;
+
+
+        final DailyReminder rx = new DailyReminder(context);
 
         scDaily.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 List<String> sNew = statusHelper.getAllStatus();
                 String sRelease = sNew.get(RELEASE_FIELD);
+                String sAlarm = sNew.get(TOTAL_ALARM_FIELD);
                 List<String> sr = new ArrayList<>();
                 if (isChecked) {
                     sr.add(0, String.valueOf(1));
                     sr.add(1,sRelease);
-                    sr.add(2,String.valueOf(0));
+                    sr.add(2,sAlarm);
                     statusHelper.updateStatus(sr);
+                    rx.enabledDailyAlarm();
                     Toast.makeText(ReminderSetting.this, "Daily Reminder ON", Toast.LENGTH_SHORT).show();
                 } else {
                     sr.add(0, String.valueOf(0));
                     sr.add(1,sRelease);
-                    sr.add(2,String.valueOf(0));
+                    sr.add(2,sAlarm);
+                    rx.disabledDailyAlarm();
                     statusHelper.updateStatus(sr);
                     Toast.makeText(ReminderSetting.this, "Daily Reminder OFF", Toast.LENGTH_SHORT).show();
                 }
@@ -69,7 +77,6 @@ public class ReminderSetting extends AppCompatActivity {
                 Log.i("cekStatus","DAILY:"+s.get(0)+": RELEASE:"+s.get(1));
             }
         });
-        context = this;
         final ReleaseReminder r = new ReleaseReminder(context);
 
         scRelease.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,9 +98,8 @@ public class ReminderSetting extends AppCompatActivity {
                     sr.add(0,sDaily);
                     sr.add(1, String.valueOf(0));
                     sr.add(2,String.valueOf(0));
-                    statusHelper.updateStatus(sr);
                     List<String> sNewB = statusHelper.getAllStatus();
-
+                    statusHelper.updateStatus(sr);
                     r.disableReleaseAlarm(Integer.valueOf(sNewB.get(2)));
                     Toast.makeText(ReminderSetting.this, "Release Reminder OFF", Toast.LENGTH_SHORT).show();
                 }

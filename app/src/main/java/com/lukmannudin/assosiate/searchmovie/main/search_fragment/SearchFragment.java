@@ -2,6 +2,7 @@ package com.lukmannudin.assosiate.searchmovie.main.search_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +16,14 @@ import android.widget.ProgressBar;
 
 import com.lukmannudin.assosiate.searchmovie.BuildConfig;
 import com.lukmannudin.assosiate.searchmovie.R;
+import com.lukmannudin.assosiate.searchmovie.Utils;
 import com.lukmannudin.assosiate.searchmovie.dao.Model.MovieTrending;
 import com.lukmannudin.assosiate.searchmovie.dao.Response;
 import com.lukmannudin.assosiate.searchmovie.network.APIClient;
 import com.lukmannudin.assosiate.searchmovie.network.MovieService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,11 +39,28 @@ public class SearchFragment extends Fragment {
     private SearchAdapter adapter;
     private EditText edtSearch;
     private ProgressBar loading;
+    private int pageId;
+
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
+    public static SearchFragment newInstance(int pageId) {
+        SearchFragment fragment = new SearchFragment();
+        Bundle args = new Bundle();
+        args.putInt(Utils.page, pageId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            pageId = getArguments().getInt(Utils.page);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

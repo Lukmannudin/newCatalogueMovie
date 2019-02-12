@@ -77,8 +77,12 @@ public class MovieDetail extends AppCompatActivity {
 
         movieId = getIntent().getIntExtra("movieId", 0);
 
-        if (favoriteHelper.favoriteState(movieId)) {
-            isFavorite = true;
+        try {
+            if (favoriteHelper.favoriteState(movieId)) {
+                isFavorite = true;
+            }
+        } catch (Exception e){
+            Log.i("ERROR",e.getLocalizedMessage());
         }
 
         pageId = getIntent().getIntExtra(Utils.page,0);

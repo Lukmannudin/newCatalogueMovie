@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -35,8 +36,13 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public void onDataSetChanged() {
-       List<Movie> mv = favoriteHelper.getAllFavorite();
-        mWidgetItems.addAll(mv);
+        try {
+            mWidgetItems.clear();
+            List<Movie> mv = favoriteHelper.getAllFavorite();
+            mWidgetItems.addAll(mv);
+        }catch (Exception e){
+            Log.i("Error",e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -62,7 +68,7 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
                     .apply(new RequestOptions().fitCenter())
                     .submit()
                     .get();
-            rv.setImageViewBitmap(R.id.imageView , preview);
+            rv.setImageViewBitmap(R.id.imageView, preview);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
