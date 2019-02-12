@@ -3,9 +3,11 @@ package com.lukmannudin.assosiate.searchmovie.Widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class ImageBannerWidget extends AppWidgetProvider {
         PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override
@@ -45,14 +48,18 @@ public class ImageBannerWidget extends AppWidgetProvider {
                 int viewIndex = intent.getIntExtra(EXTRA_ITEM, 0);
                 Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show();
             }
-
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName thisWidget = new ComponentName(context, ImageBannerWidget.class);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+            Log.i("cek","kepanggil");
         }
-
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -68,12 +75,5 @@ public class ImageBannerWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    protected PendingIntent getPendingSelfIntent(Context context, int appWidgetId,String
-            action){
-        Intent intent = new Intent(context,getClass());
-        intent.setAction(action);
-        intent.putExtra(WIDGET_ID_EXTRA,appWidgetId);
-        return PendingIntent.getBroadcast(context,appWidgetId,intent,0);
-    }
 }
 

@@ -1,7 +1,6 @@
 package com.lukmannudin.assosiate.searchmovie.Alarm;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -84,6 +83,7 @@ public class ReleaseReminder {
     public void disableReleaseAlarm(int totalAlarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+        Log.i("cancel",String.valueOf(totalAlarm));
         for (int i = 1; i < totalAlarm; i++) {
             Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingUpdateIntent = PendingIntent.getService(context,

@@ -20,7 +20,7 @@
     <string name="favorites">favorites</string>
     <string name="duration">duration</string>
     <string name="add_widget">Add widget</string>
-    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="appwidget_text">Favorites Movie</string>
     <string name="empty_text">NO DATA</string>
     <string name="content_title">Content title</string>
     <string name="content_text">Content text</string>

@@ -12,12 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.lukmannudin.assosiate.searchmovie.Alarm.AlarmReceiver;
-import com.lukmannudin.assosiate.searchmovie.Alarm.ReleaseReminder;
 import com.lukmannudin.assosiate.searchmovie.R;
 import com.lukmannudin.assosiate.searchmovie.ReminderSetting;
 import com.lukmannudin.assosiate.searchmovie.Utils;
 import com.lukmannudin.assosiate.searchmovie.main.Favorites.FavoritesFragment;
 import com.lukmannudin.assosiate.searchmovie.main.now_playing_fragment.NowPlayngFragment;
+import com.lukmannudin.assosiate.searchmovie.main.search_fragment.SearchFragment;
 import com.lukmannudin.assosiate.searchmovie.main.up_coming_fragment.UpComingFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("cekPage3", String.valueOf(R.id.favorites_movie));
                         break;
                     }
-//                    case R.id.search_movie: {
-//                        pageContent = new SearchFragment();
-//                        break;
-//                    }
+                    case R.id.search_movie: {
+                        pageContent = new SearchFragment();
+                        break;
+                    }
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_container, pageContent).commit();
                 return true;

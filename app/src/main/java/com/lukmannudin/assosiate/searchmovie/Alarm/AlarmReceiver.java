@@ -34,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private int maxNotif = 2;
     public static final String EXTRA_TYPE = "type";
     private final int ID_ONETIME = 100;
-    private final int ID_REPEATING = 101;
+    public static final int ID_REPEATING = 9099;
     private int teuing = 0;
 
     public AlarmReceiver() {
@@ -118,14 +118,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context, "One time alarm set up", Toast.LENGTH_SHORT).show();
     }
 
-    public void setRepeatingAlarm(Context context, String type, String time, String message) {
-
+    public void setRepeatingAlarm(Context context) {
+        String time = "07:00";
+        String message = "Catalogue Movie missing you!";
+        String title = "Catalogue Movie";
         if (isDateInvalid(time, TIME_FORMAT)) return;
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
+
+        intent.putExtra(EXTRA_ID,100);
+        intent.putExtra(EXTRA_TITLE,title);
         intent.putExtra(EXTRA_MESSAGE, message);
-        intent.putExtra(EXTRA_TYPE, type);
 
         String timeArray[] = time.split(":");
         Log.i("ceki", time);
