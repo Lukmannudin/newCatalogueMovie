@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private String KEY_FRAGMENT = "fragment";
     private AlarmReceiver alarmReceiver;
     private int idNotif = 0;
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

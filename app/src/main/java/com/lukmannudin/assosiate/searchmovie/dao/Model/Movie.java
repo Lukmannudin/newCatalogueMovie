@@ -1,12 +1,21 @@
 package com.lukmannudin.assosiate.searchmovie.dao.Model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.lukmannudin.assosiate.searchmovie.dao.Database.DatabaseContract;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static android.provider.BaseColumns._ID;
+import static com.lukmannudin.assosiate.searchmovie.dao.Database.DatabaseContract.FavoriteColumns.GENRES;
+import static com.lukmannudin.assosiate.searchmovie.dao.Database.DatabaseContract.getColumnInt;
+import static com.lukmannudin.assosiate.searchmovie.dao.Database.DatabaseContract.getColumnString;
 
 public class Movie implements Parcelable {
     @SerializedName("adult")
@@ -141,8 +150,42 @@ public class Movie implements Parcelable {
         }
     };
 
-    public Movie() {
+    public Movie(){
 
+    }
+
+    public Movie(int id,String title,String posterPath, Double voteAverage, Double popularity, String originalLanguage,
+                 List<Genre> genres,String releaseDate,String overview
+                 ) {
+        this.id = id;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.voteAverage = voteAverage;
+        this.popularity = popularity;
+        this.originalLanguage = originalLanguage;
+        this.genres = genres;
+        this.releaseDate = releaseDate;
+        this.overview = overview;
+    }
+
+    public Movie(Cursor cursor){
+        String sb = getColumnString(cursor,DatabaseContract.FavoriteColumns.GENRES);
+        List<String> s = Arrays.asList(sb.split("\\s*,\\s*"));
+        List<Genre> gList = new ArrayList<>();
+        if (s.size() > 0) {
+            for (int i = 1; i < s.size(); i++) {
+                gList.add(new Genre(s.get(i)));
+            }
+        }
+        this.id = getColumnInt(cursor, _ID);
+        this.title = getColumnString(cursor, DatabaseContract.FavoriteColumns.TITLE);
+        this.posterPath = getColumnString(cursor,DatabaseContract.FavoriteColumns.IMAGE_PATH);
+        this.voteAverage = Double.valueOf(getColumnString(cursor,DatabaseContract.FavoriteColumns.RATING));
+        this.popularity = Double.valueOf(getColumnString(cursor,DatabaseContract.FavoriteColumns.POPULARITY));
+        this.originalLanguage = getColumnString(cursor,DatabaseContract.FavoriteColumns.LANGUAGE);
+        this.genres = gList;
+        this.releaseDate = getColumnString(cursor,DatabaseContract.FavoriteColumns.RELEASE);
+        this.overview = getColumnString(cursor,DatabaseContract.FavoriteColumns.OVERVIEW);
     }
 
     public Boolean getAdult() {

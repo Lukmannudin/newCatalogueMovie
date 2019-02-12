@@ -73,7 +73,6 @@ public class FavoriteHelper {
             Movie movie;
             if (cursor.getCount() > 0) {
                 do {
-                    movie = new Movie();
                     String sb = cursor.getString(cursor.getColumnIndexOrThrow(GENRES));
 
                     List<String> s = Arrays.asList(sb.split("\\s*,\\s*"));
@@ -84,16 +83,16 @@ public class FavoriteHelper {
                         }
                     }
 
-                    movie.setId(cursor.getInt(cursor.getColumnIndexOrThrow(_ID)));
-                    movie.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
-                    movie.setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_PATH)));
-                    movie.setVoteAverage(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(RATING))));
-                    movie.setPopularity(Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(POPULARITY))));
-                    movie.setOriginalLanguage(cursor.getString(cursor.getColumnIndexOrThrow(LANGUAGE)));
-                    movie.setGenres(gList);
-                    movie.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(RELEASE)));
-                    movie.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
-                    arrayList.add(movie);
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(_ID));
+                    String title =  cursor.getString(cursor.getColumnIndexOrThrow(TITLE));
+                    String imagePath = cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_PATH));
+                    Double rating = Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(RATING)));
+                    Double popularity = Double.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(POPULARITY)));
+                    String language = cursor.getString(cursor.getColumnIndexOrThrow(LANGUAGE));
+                    List<Genre> genres = gList;
+                    String release = cursor.getString(cursor.getColumnIndexOrThrow(RELEASE));
+                    String overview = cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW));
+                    arrayList.add(new Movie(id, title, imagePath, rating,popularity,language,genres,release,overview));
                     cursor.moveToNext();
                 } while (!cursor.isAfterLast());
             }
@@ -145,5 +144,36 @@ public class FavoriteHelper {
 
     public int deleteFavorite(int id) {
         return database.delete(TABLE_FAVORITE, _ID + " = '" + id + "'", null);
+    }
+
+    public Cursor queryByIdProvider(String id) {
+        return database.query(DATABASE_TABLE, null
+                , _ID + " = ?"
+                , new String[]{id}
+                , null
+                , null
+                , null
+                , null);
+    }
+
+    public Cursor queryProvider() {
+        return database.query(DATABASE_TABLE
+                , null
+                , null
+                , null
+                , null
+                , null
+                , _ID + " ASC");
+    }
+    public long insertProvider(ContentValues values) {
+        return database.insert(DATABASE_TABLE, null, values);
+    }
+
+    public int updateProvider(String id, ContentValues values) {
+        return database.update(DATABASE_TABLE, values, _ID + " = ?", new String[]{id});
+    }
+
+    public int deleteProvider(String id) {
+        return database.delete(DATABASE_TABLE, _ID + " = ?", new String[]{id});
     }
 }
