@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -31,17 +31,24 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     public void onCreate() {
         favoriteHelper = FavoriteHelper.getInstance(mContext);
         favoriteHelper.open();
-
     }
 
     @Override
     public void onDataSetChanged() {
-        try {
-            mWidgetItems.clear();
-            List<Movie> mv = favoriteHelper.getAllFavorite();
+        mWidgetItems.clear();
+        List<Movie> mv = favoriteHelper.getAllFavorite();
+        if (mv.size() == 0) {
+            Movie m = new Movie();
+            m.setPosterPath("");
+            m.setOriginalLanguage("");
+            m.setVoteAverage(0.0);
+            m.setPopularity(0.0);
+            m.setOriginalLanguage("");
+            m.setOverview("");
+            m.setReleaseDate("");
+            mWidgetItems.add(m);
+        } else {
             mWidgetItems.addAll(mv);
-        }catch (Exception e){
-            Log.i("Error",e.getLocalizedMessage());
         }
     }
 
@@ -57,30 +64,29 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public RemoteViews getViewAt(int position) {
-
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
-//        rv.setImageViewBitmap(R.id.imageView, mWidgetItems.get(position));
-
-        try {
-            Bitmap preview = Glide.with(mContext)
-                    .asBitmap()
-                    .load("https://image.tmdb.org/t/p/w500/" + mWidgetItems.get(position).getPosterPath())
-                    .apply(new RequestOptions().fitCenter())
-                    .submit()
-                    .get();
-            rv.setImageViewBitmap(R.id.imageView, preview);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (mWidgetItems.size() > 0) {
+            try {
+                Bitmap preview = Glide.with(mContext)
+                        .asBitmap()
+                        .load("https://image.tmdb.org/t/p/w500/" + mWidgetItems.get(position).getPosterPath())
+                        .apply(new RequestOptions().fitCenter())
+                        .submit()
+                        .get();
+                rv.setImageViewBitmap(R.id.imageView, preview);
+                Bundle extras = new Bundle();
+                extras.putInt(ImageBannerWidget.EXTRA_ITEM, position);
+                Intent fillInIntent = new Intent();
+                fillInIntent.putExtras(extras);
+                rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);
+                return rv;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
-
-        Bundle extras = new Bundle();
-        extras.putInt(ImageBannerWidget.EXTRA_ITEM, position);
-        Intent fillInIntent = new Intent();
-        fillInIntent.putExtras(extras);
-        rv.setOnClickFillInIntent(R.id.imageView, fillInIntent);
-        return rv;
+        return null;
     }
 
     @Override
@@ -102,4 +108,5 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     public boolean hasStableIds() {
         return false;
     }
+
 }

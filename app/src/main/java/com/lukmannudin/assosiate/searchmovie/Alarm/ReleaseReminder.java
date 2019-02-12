@@ -24,10 +24,10 @@ import io.reactivex.schedulers.Schedulers;
 public class ReleaseReminder {
     private List<ResultsItem> data = new ArrayList<>();
     private Context context;
+    private Disposable disposable;
 
 
-
-    public ReleaseReminder(Context context){
+    public ReleaseReminder(Context context) {
         this.context = context;
     }
 
@@ -40,13 +40,14 @@ public class ReleaseReminder {
                 .subscribe(new SingleObserver<NowPlayingResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
                     public void onSuccess(NowPlayingResponse nowPlayingResponse) {
-                        Log.i("sizeData",String.valueOf(nowPlayingResponse.getResults().size()));
+                        Log.i("sizeData", String.valueOf(nowPlayingResponse.getResults().size()));
                         processData(context, nowPlayingResponse.getResults());
+
                     }
 
                     @Override
@@ -62,11 +63,10 @@ public class ReleaseReminder {
         statusHelper.open();
         List<String> sr = new ArrayList<>();
         this.data = resultsItems;
-        Log.i("cek",String.valueOf(resultsItems.size()));
-                AlarmReceiver alarmReceiver;
+        AlarmReceiver alarmReceiver;
         alarmReceiver = new AlarmReceiver();
         List<String> s = statusHelper.getAllStatus();
-        Log.i("lol",String.valueOf(s.size()));
+        Log.i("lol", String.valueOf(s.size()));
         sr.add(s.get(0));
         sr.add(s.get(1));
         sr.add(String.valueOf(resultsItems.size()));
@@ -75,15 +75,13 @@ public class ReleaseReminder {
                 resultsItems);
     }
 
-    public void enableReleaseAlarm(Context context){
+    public void enableReleaseAlarm(Context context) {
         getData(context);
-        Log.i("Data",String.valueOf(data.size()));
-
     }
+
     public void disableReleaseAlarm(int totalAlarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Log.i("cancel",String.valueOf(totalAlarm));
         for (int i = 1; i < totalAlarm; i++) {
             Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingUpdateIntent = PendingIntent.getService(context,
@@ -93,7 +91,6 @@ public class ReleaseReminder {
             // Cancel alarms
             try {
                 alarmManager.cancel(pendingUpdateIntent);
-                Log.i("babi", "success: ");
             } catch (Exception e) {
                 Log.i("Alarm", "AlarmManager update was not canceled. " + e.toString());
             }

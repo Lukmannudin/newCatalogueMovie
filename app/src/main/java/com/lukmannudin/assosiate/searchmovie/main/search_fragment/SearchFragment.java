@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class SearchFragment extends Fragment {
     private EditText edtSearch;
     private ProgressBar loading;
     private int pageId;
-
+    private Disposable disposable;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -84,8 +83,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String queryData = edtSearch.getText().toString();
-                Log.i("querySearch", queryData);
-                searchData(queryData);
+                if (!queryData.equals("")) {
+                    searchData(queryData);
+                }
             }
         });
 
@@ -102,7 +102,7 @@ public class SearchFragment extends Fragment {
                 .subscribe(new SingleObserver<Response<MovieTrending>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
@@ -124,7 +124,7 @@ public class SearchFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private void searchData(String queryData){
+    private void searchData(String queryData) {
         loading.setVisibility(View.VISIBLE);
         MovieService movieService = APIClient.getClient()
                 .create(MovieService.class);
@@ -148,5 +148,11 @@ public class SearchFragment extends Fragment {
                     }
                 });
 //        loading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }

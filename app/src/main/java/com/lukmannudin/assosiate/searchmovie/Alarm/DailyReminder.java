@@ -28,7 +28,6 @@ public class DailyReminder {
             // Cancel alarms
             try {
                 alarmManager.cancel(pendingUpdateIntent);
-                Log.i("cek", "disableReleaseAlarm: ");
             } catch (Exception e) {
                 Log.i("Alarm", "AlarmManager update was not canceled. " + e.toString());
             }

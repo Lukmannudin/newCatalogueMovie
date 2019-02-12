@@ -101,7 +101,7 @@ public class NowPlayngFragment extends Fragment {
                 .subscribe(new SingleObserver<NowPlayingResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
@@ -125,4 +125,9 @@ public class NowPlayngFragment extends Fragment {
         loading.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
+    }
 }

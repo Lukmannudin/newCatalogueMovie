@@ -43,6 +43,7 @@ public class UpComingFragment extends Fragment {
     NowPlayingAdapter adapter;
     List<ResultsItem> data2;
     private int pageId;
+    private Disposable disposable;
 
     public UpComingFragment() {
         // Required empty public constructor
@@ -116,7 +117,7 @@ public class UpComingFragment extends Fragment {
                 .subscribe(new SingleObserver<NowPlayingResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
@@ -145,5 +146,11 @@ public class UpComingFragment extends Fragment {
         alarmReceiver = new AlarmReceiver();
         alarmReceiver.setOneTimeAlarm(context,
                 data2);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }

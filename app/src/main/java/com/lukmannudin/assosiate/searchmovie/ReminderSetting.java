@@ -22,6 +22,7 @@ public class ReminderSetting extends AppCompatActivity {
     private int RELEASE_FIELD = 1;
     private int TOTAL_ALARM_FIELD = 2;
     private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class ReminderSetting extends AppCompatActivity {
         statusHelper.open();
 
         List<String> s = statusHelper.getAllStatus();
-        Log.i("cekStatus","DAILY:"+s.get(0)+": RELEASE:"+s.get(1));
+        Log.i("cekStatus", "DAILY:" + s.get(0) + ": RELEASE:" + s.get(1));
 
         if (!s.get(DAILY_FIELD).equals(String.valueOf(1))) {
             scDaily.setChecked(false);
@@ -60,21 +61,21 @@ public class ReminderSetting extends AppCompatActivity {
                 List<String> sr = new ArrayList<>();
                 if (isChecked) {
                     sr.add(0, String.valueOf(1));
-                    sr.add(1,sRelease);
-                    sr.add(2,sAlarm);
+                    sr.add(1, sRelease);
+                    sr.add(2, sAlarm);
                     statusHelper.updateStatus(sr);
                     rx.enabledDailyAlarm();
                     Toast.makeText(ReminderSetting.this, "Daily Reminder ON", Toast.LENGTH_SHORT).show();
                 } else {
                     sr.add(0, String.valueOf(0));
-                    sr.add(1,sRelease);
-                    sr.add(2,sAlarm);
+                    sr.add(1, sRelease);
+                    sr.add(2, sAlarm);
                     rx.disabledDailyAlarm();
                     statusHelper.updateStatus(sr);
                     Toast.makeText(ReminderSetting.this, "Daily Reminder OFF", Toast.LENGTH_SHORT).show();
                 }
                 List<String> s = statusHelper.getAllStatus();
-                Log.i("cekStatus","DAILY:"+s.get(0)+": RELEASE:"+s.get(1));
+                Log.i("cekStatus", "DAILY:" + s.get(0) + ": RELEASE:" + s.get(1));
             }
         });
         final ReleaseReminder r = new ReleaseReminder(context);
@@ -86,37 +87,29 @@ public class ReminderSetting extends AppCompatActivity {
                 List<String> sNew = statusHelper.getAllStatus();
                 String sDaily = sNew.get(DAILY_FIELD);
                 if (isChecked) {
-                    sr.add(0,sDaily);
+                    sr.add(0, sDaily);
                     sr.add(1, String.valueOf(1));
-                    sr.add(2,String.valueOf(0));
+                    sr.add(2, String.valueOf(0));
                     statusHelper.updateStatus(sr);
                     r.enableReleaseAlarm(context);
                     Toast.makeText(ReminderSetting.this, "Release Reminder ON", Toast.LENGTH_SHORT).show();
                     List<String> s = statusHelper.getAllStatus();
-                    Log.i("cekStatus","DAILY:"+s.get(0)+": RELEASE:"+s.get(1)+" TOTAL ALARM:"+s.get(2));
+                    Log.i("cekStatus", "DAILY:" + s.get(0) + ": RELEASE:" + s.get(1) + " TOTAL ALARM:" + s.get(2));
                 } else {
-                    sr.add(0,sDaily);
+                    sr.add(0, sDaily);
                     sr.add(1, String.valueOf(0));
-                    sr.add(2,String.valueOf(0));
+                    sr.add(2, String.valueOf(0));
                     List<String> sNewB = statusHelper.getAllStatus();
                     statusHelper.updateStatus(sr);
                     r.disableReleaseAlarm(Integer.valueOf(sNewB.get(2)));
                     Toast.makeText(ReminderSetting.this, "Release Reminder OFF", Toast.LENGTH_SHORT).show();
                 }
                 List<String> s = statusHelper.getAllStatus();
-                Log.i("cekStatus","DAILY:"+s.get(0)+": RELEASE:"+s.get(1)+" TOTAL ALARM:"+s.get(2));
+                Log.i("cekStatus", "DAILY:" + s.get(0) + ": RELEASE:" + s.get(1) + " TOTAL ALARM:" + s.get(2));
 
             }
         });
         List<String> sBab = statusHelper.getAllStatus();
-
-        Log.i("AYEUNA","DAILY:"+sBab.get(0)+": RELEASE:"+sBab.get(1)+" TOTAL ALARM:"+sBab.get(2));
-//        List<String> sr = new ArrayList<>();
-//        sr.add(0,String.valueOf(1));
-//        sr.add(1,String.valueOf(0));
-//        statusHelper.updateStatus(sr);
-//        List<String> s = statusHelper.getAllStatus();
-//        Log.i("kunti",String.valueOf(s.get(0)));
     }
 
     @Override

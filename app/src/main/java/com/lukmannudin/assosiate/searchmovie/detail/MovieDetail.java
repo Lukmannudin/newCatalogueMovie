@@ -55,6 +55,7 @@ public class MovieDetail extends AppCompatActivity {
     private Boolean isFavorite = false;
     private Menu menuItem = null;
     private int pageId;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,18 +82,18 @@ public class MovieDetail extends AppCompatActivity {
             if (favoriteHelper.favoriteState(movieId)) {
                 isFavorite = true;
             }
-        } catch (Exception e){
-            Log.i("ERROR",e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.i("ERROR", e.getLocalizedMessage());
         }
 
-        pageId = getIntent().getIntExtra(Utils.page,0);
-        Log.i("fra detail",String.valueOf(pageId));
+        pageId = getIntent().getIntExtra(Utils.page, 0);
+        Log.i("fra detail", String.valueOf(pageId));
 
         String movieTitle = getIntent().getStringExtra("movieTitle");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(movieTitle);
         layoutVisible(false);
-        Log.i("cikok",String.valueOf(pageId));
+        Log.i("cikok", String.valueOf(pageId));
         if (savedInstanceState != null) {
             movieData = savedInstanceState.getParcelable(KEY_DATA);
             genreList.addAll(movieData.getGenres());
@@ -119,7 +120,7 @@ public class MovieDetail extends AppCompatActivity {
                 .subscribe(new SingleObserver<Movie>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposable = d;
                     }
 
                     @Override
@@ -137,7 +138,6 @@ public class MovieDetail extends AppCompatActivity {
     void processData(Movie data) {
         genreList.clear();
         genreList.addAll(data.getGenres());
-
         layoutVisible(true);
         adapter.notifyDataSetChanged();
         initView(data);
@@ -200,21 +200,25 @@ public class MovieDetail extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent i = new Intent(this, MainActivity.class);
-                i.putExtra(Utils.page,pageId);
-                Log.i("cik",String.valueOf(pageId));
+                i.putExtra(Utils.page, pageId);
+                Log.i("cik", String.valueOf(pageId));
                 startActivity(i);
                 break;
 
             case R.id.favorite: {
-                startJob();
                 if (isFavorite) {
-                    removeFromFavorite();
+                    try {
+                        removeFromFavorite();
+                    } catch (Exception e) {
+                        Log.i("cekidot",e.getLocalizedMessage());
+                    }
                 } else {
                     favoriteHelper.insertFavorite(movieData);
                     Toast.makeText(this, "Added to Favorite", Toast.LENGTH_SHORT).show();
                 }
                 isFavorite = !isFavorite;
                 setFavorite();
+                startJob();
                 break;
             }
         }
@@ -224,7 +228,7 @@ public class MovieDetail extends AppCompatActivity {
     private static int jobId = 100;
     private static int SCHEDULE_OF_PERIOD = 10;
 
-    private void startJob(){
+    private void startJob() {
         ComponentName mServiceComponent = new ComponentName(this, UpdateWidgetService.class);
         JobInfo.Builder builder = new JobInfo.Builder(jobId, mServiceComponent);
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE);
@@ -233,13 +237,14 @@ public class MovieDetail extends AppCompatActivity {
         } else {
             builder.setPeriodic(SCHEDULE_OF_PERIOD);
         }
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobScheduler jobScheduler = (JobScheduler)getSystemService(Context.JOB_SCHEDULER_SERVICE);
         Objects.requireNonNull(jobScheduler).schedule(builder.build());
         Toast.makeText(this, "Job Service started", Toast.LENGTH_SHORT).show();
     }
+
     private void setFavorite() {
         if (isFavorite) {
-            menuItem.getItem(0).setIcon(ContextCompat.getDrawable( this, R.drawable.ic_favorite_black_24dp));
+            menuItem.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_black_24dp));
         } else {
             menuItem.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_24dp));
         }
@@ -249,5 +254,6 @@ public class MovieDetail extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         favoriteHelper.close();
+        disposable.dispose();
     }
 }
