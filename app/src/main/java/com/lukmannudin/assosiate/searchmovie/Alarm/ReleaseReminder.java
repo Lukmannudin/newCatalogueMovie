@@ -93,7 +93,7 @@ public class ReleaseReminder {
             // Cancel alarms
             try {
                 alarmManager.cancel(pendingUpdateIntent);
-                Log.i("cek", "disableReleaseAlarm: ");
+                Log.i("babi", "success: ");
             } catch (Exception e) {
                 Log.i("Alarm", "AlarmManager update was not canceled. " + e.toString());
             }
