@@ -141,7 +141,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ID_REPEATING, intent, 0);
         if (alarmManager != null) {
-            Log.i("cekoprat", String.valueOf(calendar.getTime()));
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
 
