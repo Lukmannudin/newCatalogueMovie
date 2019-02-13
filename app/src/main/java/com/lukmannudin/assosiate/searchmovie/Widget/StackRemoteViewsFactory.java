@@ -37,6 +37,7 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     public void onDataSetChanged() {
         mWidgetItems.clear();
         List<Movie> mv = favoriteHelper.getAllFavorite();
+        //Saya sengaja memasukan data initial kosong ini karena jika data kosong pada perangkat saya samsung UI/Experience nya force close
         if (mv.size() == 0) {
             Movie m = new Movie();
             m.setPosterPath("");

@@ -115,7 +115,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
         }
-        Toast.makeText(context, "One time alarm set up", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "One time alarm set up", Toast.LENGTH_SHORT).show();
     }
 
     public void setRepeatingAlarm(Context context) {
@@ -145,7 +145,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
 
-        Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show();
     }
 
     private String DATE_FORMAT = "yyyy-MM-dd";

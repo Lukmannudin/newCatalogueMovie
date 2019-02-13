@@ -239,7 +239,7 @@ public class MovieDetail extends AppCompatActivity {
         }
         JobScheduler jobScheduler = (JobScheduler)getSystemService(Context.JOB_SCHEDULER_SERVICE);
         Objects.requireNonNull(jobScheduler).schedule(builder.build());
-        Toast.makeText(this, "Job Service started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Job Service started", Toast.LENGTH_SHORT).show();
     }
 
     private void setFavorite() {
@@ -254,6 +254,8 @@ public class MovieDetail extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         favoriteHelper.close();
-        disposable.dispose();
+        if (disposable!= null){
+            disposable.dispose();
+        }
     }
 }

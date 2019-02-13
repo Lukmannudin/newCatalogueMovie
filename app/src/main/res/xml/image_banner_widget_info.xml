@@ -4,6 +4,6 @@
     android:initialLayout="@layout/image_banner_widget"
     android:minWidth="250dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/play_button"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen"></appwidget-provider>

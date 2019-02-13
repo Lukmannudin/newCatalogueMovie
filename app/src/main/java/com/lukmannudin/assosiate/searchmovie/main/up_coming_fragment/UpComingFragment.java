@@ -151,6 +151,8 @@ public class UpComingFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+        if (disposable!=null){
+            disposable.dispose();
+        }
     }
 }

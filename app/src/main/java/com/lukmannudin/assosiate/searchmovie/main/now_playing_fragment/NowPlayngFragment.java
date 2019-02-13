@@ -40,14 +40,15 @@ public class NowPlayngFragment extends Fragment {
     List<ResultsItem> data2;
     private int pageId;
     private Disposable disposable;
+
     public NowPlayngFragment() {
         // Required empty public constructor
     }
 
-    public static NowPlayngFragment newInstance(int pageId){
+    public static NowPlayngFragment newInstance(int pageId) {
         NowPlayngFragment fragment = new NowPlayngFragment();
         Bundle args = new Bundle();
-        args.putInt(Utils.page,pageId);
+        args.putInt(Utils.page, pageId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,8 +81,8 @@ public class NowPlayngFragment extends Fragment {
         loading = view.findViewById(R.id.mainProggressbar);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         movieRecyclerView.setLayoutManager(layoutManager);
-        if (data2 != null){
-            adapter = new NowPlayingAdapter(getContext(), data2,pageId);
+        if (data2 != null) {
+            adapter = new NowPlayingAdapter(getContext(), data2, pageId);
             movieRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         } else {
@@ -95,7 +96,7 @@ public class NowPlayngFragment extends Fragment {
         MovieService movieService = APIClient.getClient()
                 .create(MovieService.class);
 
-          movieService.getNowPlaying(BuildConfig.API_KEY)
+        movieService.getNowPlaying(BuildConfig.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<NowPlayingResponse>() {
@@ -119,7 +120,7 @@ public class NowPlayngFragment extends Fragment {
 
     private void processData(List<ResultsItem> resultsItems) {
         data.addAll(resultsItems);
-        adapter = new NowPlayingAdapter(getContext(), resultsItems,pageId);
+        adapter = new NowPlayingAdapter(getContext(), resultsItems, pageId);
         movieRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         loading.setVisibility(View.GONE);
@@ -128,6 +129,8 @@ public class NowPlayngFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.dispose();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 }

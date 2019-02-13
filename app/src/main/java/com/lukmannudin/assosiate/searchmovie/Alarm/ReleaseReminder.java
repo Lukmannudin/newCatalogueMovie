@@ -81,7 +81,6 @@ public class ReleaseReminder {
 
     public void disableReleaseAlarm(int totalAlarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         for (int i = 1; i < totalAlarm; i++) {
             Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingUpdateIntent = PendingIntent.getService(context,
@@ -96,5 +95,4 @@ public class ReleaseReminder {
             }
         }
     }
-
 }
