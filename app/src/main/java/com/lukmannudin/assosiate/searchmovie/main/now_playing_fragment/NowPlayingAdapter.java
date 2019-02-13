@@ -56,7 +56,6 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Mo
 
                 intent.putExtra("movieTitle", results.get(i).getTitle());
                 intent.putExtra(Utils.page,pageId);
-                Log.i("fra adapter",String.valueOf(pageId));
                 movieViewHolder.itemView.getContext().startActivity(intent);
             }
         });

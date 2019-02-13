@@ -72,7 +72,7 @@ public class SearchFragment extends Fragment {
         Button btnSearch = view.findViewById(R.id.btnSearch);
         edtSearch = view.findViewById(R.id.edtSearchText);
         getData();
-        adapter = new SearchAdapter(movieTrendingList);
+        adapter = new SearchAdapter(movieTrendingList,pageId);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         movieRecyclerView.setLayoutManager(layoutManager);
         movieRecyclerView.setAdapter(adapter);

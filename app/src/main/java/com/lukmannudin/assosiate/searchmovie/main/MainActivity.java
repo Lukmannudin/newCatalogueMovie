@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.search_movie: {
-                        pageContent = new SearchFragment();
+                        pageContent = SearchFragment.newInstance(R.id.search_movie);
                         break;
                     }
                 }
@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.favorites_movie: {
                     pageContent = FavoritesFragment.newInstance(R.id.favorites_movie);
                     bottomNavigationView.getMenu().findItem(R.id.favorites_movie).setChecked(true);
+                    break;
+                }
+
+                case R.id.search_movie: {
+                    pageContent = SearchFragment.newInstance(R.id.search_movie);
+                    bottomNavigationView.getMenu().findItem(R.id.search_movie).setChecked(true);
                     break;
                 }
             }

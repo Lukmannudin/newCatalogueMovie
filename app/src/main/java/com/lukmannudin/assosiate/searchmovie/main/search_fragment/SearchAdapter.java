@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lukmannudin.assosiate.searchmovie.R;
+import com.lukmannudin.assosiate.searchmovie.Utils;
 import com.lukmannudin.assosiate.searchmovie.dao.Model.MovieTrending;
 import com.lukmannudin.assosiate.searchmovie.detail.MovieDetail;
 
@@ -21,7 +23,7 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewHolder> {
     private List<MovieTrending> movieTrendingList;
     private Context context;
-
+    private int pageId;
 
     @NonNull
     @Override
@@ -31,8 +33,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
         return new MovieViewHolder(view);
     }
 
-    SearchAdapter(List<MovieTrending> movieTrendingList) {
+    SearchAdapter(List<MovieTrending> movieTrendingList,int pageId) {
         this.movieTrendingList = movieTrendingList;
+        this.pageId = pageId;
     }
 
     @Override
@@ -49,6 +52,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
                 Intent intent = new Intent(holder.itemView.getContext(), MovieDetail.class);
                 intent.putExtra("movieId", movieTrendingList.get(position).getId());
                 intent.putExtra("movieTitle", movieTrendingList.get(position).getTitle());
+                intent.putExtra(Utils.page,pageId);
+                Log.i("pageId",String.valueOf(pageId));
                 holder.itemView.getContext().startActivity(intent);
             }
         });
