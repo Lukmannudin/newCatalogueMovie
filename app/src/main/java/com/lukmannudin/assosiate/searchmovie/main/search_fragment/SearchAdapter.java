@@ -48,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MovieViewH
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), MovieDetail.class);
                 intent.putExtra("movieId", movieTrendingList.get(position).getId());
-                intent.putExtra("movieTitle", movieTrendingList.get(position).getOriginalTitle());
+                intent.putExtra("movieTitle", movieTrendingList.get(position).getTitle());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

@@ -52,7 +52,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Movi
             public void onClick(View v) {
                 Intent intent = new Intent(movieViewHolder.itemView.getContext(), MovieDetail.class);
                 intent.putExtra("movieId", results.get(i).getId());
-                intent.putExtra("movieTitle", results.get(i).getOriginalTitle());
+                intent.putExtra("movieTitle", results.get(i).getTitle());
                 intent.putExtra(Utils.page,pageId);
                 movieViewHolder.itemView.getContext().startActivity(intent);
             }

@@ -48,7 +48,7 @@ public class UpComingAdapter extends RecyclerView.Adapter<UpComingAdapter.MovieV
             public void onClick(View v) {
                 Intent intent = new Intent(movieViewHolder.itemView.getContext(), MovieDetail.class);
                 intent.putExtra("movieId", results.get(i).getId());
-                intent.putExtra("movieTitle", results.get(i).getOriginalTitle());
+                intent.putExtra("movieTitle", results.get(i).getTitle());
                 movieViewHolder.itemView.getContext().startActivity(intent);
             }
         });
