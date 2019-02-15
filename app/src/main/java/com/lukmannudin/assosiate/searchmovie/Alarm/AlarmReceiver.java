@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,8 +30,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final String EXTRA_ID = "notif_id";
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_MESSAGE = "message";
+    public static final String DATE = "date";
     private static final CharSequence CHANNEL_NAME = "dicoding channel";
     private final static String GROUP_KEY_EMAILS = "group_key_emails";
+    private static final String TYPE_REPEAT = "type_repeat";
     private int maxNotif = 2;
     public static final String EXTRA_TYPE = "type";
     private final int ID_ONETIME = 100;
@@ -42,14 +45,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int id = intent.getIntExtra(EXTRA_ID,0);
+        int id = intent.getIntExtra(EXTRA_ID, 0);
         String title = intent.getStringExtra(EXTRA_TITLE);
         String message = intent.getStringExtra(EXTRA_MESSAGE);
+        String dateFromAlarm = intent.getStringExtra(DATE);
 
-        showAlarmNotification(context, title,
-                message, id);
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = formatter.format(todayDate);
 
+        if (dateFromAlarm.equals(todayString) || dateFromAlarm.equals(TYPE_REPEAT)) {
+            showAlarmNotification(context, title,
+                    message, id);
+        }
     }
+
 
     private void showToast(Context context, String title, String message) {
         Toast.makeText(context, title + " : " + message, Toast.LENGTH_LONG).show();
@@ -89,13 +99,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             if (isDateInvalid(date, DATE_FORMAT) || isDateInvalid(time, TIME_FORMAT)) return;
 
-            Log.i("time",date);
+            Log.i("time", date);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
 
-            intent.putExtra(EXTRA_ID,data.get(i).getId());
-            intent.putExtra(EXTRA_TITLE,data.get(i).getTitle());
+            intent.putExtra(EXTRA_ID, data.get(i).getId());
+            intent.putExtra(EXTRA_TITLE, data.get(i).getTitle());
             intent.putExtra(EXTRA_MESSAGE, data.get(i).getTitle() + " has been release today!");
+            intent.putExtra(DATE, date);
 
             Log.e("ONE TIME", date + " " + time);
 
@@ -127,9 +138,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
 
-        intent.putExtra(EXTRA_ID,100);
-        intent.putExtra(EXTRA_TITLE,title);
+        intent.putExtra(EXTRA_ID, 100);
+        intent.putExtra(EXTRA_TITLE, title);
         intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(DATE, TYPE_REPEAT);
 
         String timeArray[] = time.split(":");
         Log.i("ceki", time);
